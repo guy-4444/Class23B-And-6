@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "270488631",
+    "project_id": "gamers-app-31961",
+    "storage_bucket": "gamers-app-31961.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270488631:android:27394c1992d29d8aa51bb2",
+        "android_client_info": {
+          "package_name": "com.guy.class23b_and_6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "270488631-8s0erm924mdlks0pnle0p6ot5o558v3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-gS0hevaKfppIpznsT2tu5CRQQx5XLMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "270488631-8s0erm924mdlks0pnle0p6ot5o558v3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

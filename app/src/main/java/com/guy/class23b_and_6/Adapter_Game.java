@@ -26,6 +26,11 @@ public class Adapter_Game extends RecyclerView.Adapter<Adapter_Game.GameViewHold
         this.games = games;
     }
 
+    public void updateList(List<Game> games) {
+        this.games = games;
+        notifyDataSetChanged();
+    }
+
     public void setOnGameClickListener(OnGameClickListener onGameClickListener) {
         this.onGameClickListener = onGameClickListener;
     }
@@ -33,14 +38,12 @@ public class Adapter_Game extends RecyclerView.Adapter<Adapter_Game.GameViewHold
     @NonNull
     @Override
     public GameViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        Log.d("ptttA", "onCreateViewHolder()");
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_game_horizontal, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_game_square, viewGroup, false);
         return new GameViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull GameViewHolder holder, int position) {
-        Log.d("ptttB", "- - onBindViewHolder() " + position);
         Game game = getItem(position);
 
         holder.game_LBL_title.setText(game.getTitle());
