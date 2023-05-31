@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,7 +54,10 @@ public class MainActivity extends AppCompatActivity {
         //read();
         changeDownloads("Age of Empires");
 
-        updateGamesFromServer();
+        MyRTFB.getGamesWithLikes(FirebaseAuth.getInstance().getUid(), _games -> {
+            games = _games;
+            initList();
+        });
     }
 
     private void changeDownloads(String gameId) {
@@ -67,29 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 .setValue(4022);
     }
 
-    private void updateGamesFromServer() {
-        games = new ArrayList<>();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference gamesRef = database.getReference("GAMES");
 
-        gamesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("pttt", snapshot.toString());
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    Game game = child.getValue(Game.class);
-                    games.add(game);
-                    Log.d("pttt", game.getTitle() + " added");
-                }
-                updateList(games);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("pttt", "onCancelled(" + error.getMessage() + ")");
-            }
-        });
-    }
 
     private void read() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -162,16 +144,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void likeClicked(int position) {
         Game game = games.get(position);
-        game.setLiked(!game.isLiked());
+        final boolean currentLikeStatus = game.isLiked();
+        game.setLiked(!currentLikeStatus);
         main_LST_games.getAdapter().notifyItemChanged(position);
+        MyRTFB.setGameLikePerUser(FirebaseAuth.getInstance().getUid(), game.getTitle(), !currentLikeStatus);
 
         Snackbar
                 .make(findViewById(android.R.id.content),(game.isLiked() ? "liked " : "unliked ") + game.getTitle(), Snackbar.LENGTH_LONG)
                 .setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        game.setLiked(!game.isLiked());
+                        game.setLiked(currentLikeStatus);
                         main_LST_games.getAdapter().notifyItemChanged(position);
+                        MyRTFB.setGameLikePerUser(FirebaseAuth.getInstance().getUid(), game.getTitle(), currentLikeStatus);
                     }
                 })
                 .show();

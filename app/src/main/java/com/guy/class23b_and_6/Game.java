@@ -15,6 +15,8 @@ public class Game {
     private double rating;
     private long downloads;
     private int year;
+
+
     private boolean liked = false;
 
     public Game() {}
